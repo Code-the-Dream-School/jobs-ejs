@@ -13,15 +13,11 @@ router.route("/register").get(registerShow).post(registerDo);
 router
   .route("/logon")
   .get(logonShow)
-  .post(
-    passport.authenticate("local", {
+  .post(passport.authenticate("local", {
       successRedirect: "/",
       failureRedirect: "/session/logon",
       failureFlash: true,
     }),
- //   (req,res,next) => {
- //     console.log("after logon", req.flash("errors"))
- //   }
   );
 router.route("/logoff").post(logoff);
 

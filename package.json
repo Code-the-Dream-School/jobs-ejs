@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test mocha tests/*.js --exit",
+    "puppeteer": "NODE_ENV=test mocha tests/puppeteer.js --exit",
     "start": "node app",
     "dev": "nodemon app"
   },
@@ -21,7 +22,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
-    "connect-mongodb-session": "^3.1.1",
+    "connect-mongodb-session": "^5.0.0",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
@@ -35,5 +36,13 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "chai": "^4.4.1",
+    "chai-http": "^4.4.0",
+    "factory-bot": "^6.3.1",
+    "mocha": "^10.3.0",
+    "puppeteer": "^22.3.0"
   }
 }
