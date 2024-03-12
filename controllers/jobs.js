@@ -24,7 +24,7 @@ const createJob = async (req, res, next) => {
     } else {
       return next(e);
     }
-    return res.render("job", { errors: req.flash("error") });
+    return res.status(400).render("job", { errors: req.flash("error") });
   }
   req.flash("info", "The job entry was created.");
   res.redirect("/jobs");

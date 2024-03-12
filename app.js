@@ -1,9 +1,8 @@
 const express = require("express");
 require("express-async-errors");
-const helmet = require('helmet');
-const xss = require('xss-clean');
-const rateLimiter = require('express-rate-limit');
-
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimiter = require("express-rate-limit");
 
 const app = express();
 
@@ -17,10 +16,10 @@ const session = require("express-session");
 
 const MongoDBStore = require("connect-mongodb-session")(session);
 let url;
-if (process.env.NODE_ENV == 'test') {
-  url = process.env.MONGO_URI_TEST
+if (process.env.NODE_ENV == "test") {
+  url = process.env.MONGO_URI_TEST;
 } else {
-  url =process.env.MONGO_URI
+  url = process.env.MONGO_URI;
 }
 
 const store = new MongoDBStore({
@@ -43,14 +42,14 @@ if (app.get("env") === "production") {
   session_parms.cookie.secure = true; // serve secure cookies
 }
 app.use(session(session_parms));
-app.use((req,res,next)=> {
+app.use((req, res, next) => {
   if (req.path == "/multiply") {
-    res.set("Content-Type","application/json")
+    res.set("Content-Type", "application/json");
   } else {
-    res.set("Content-Type","text/html")
+    res.set("Content-Type", "text/html");
   }
-  next()
-})
+  next();
+});
 app.use(require("connect-flash")());
 const passport = require("passport");
 const passport_init = require("./passport/passport_init");
@@ -64,12 +63,12 @@ let csrf_development_mode = true;
 if (app.get("env") === "production") {
   csrf_development_mode = false;
 }
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
-  })
+  }),
 );
 app.use(helmet());
 app.use(xss());
@@ -81,30 +80,30 @@ app.use(require("./middleware/storeLocals"));
 app.get("/", (req, res) => {
   res.render("index");
 });
-app.get("/multiply", (req,res)=> {
+app.get("/multiply", (req, res) => {
   let result;
   try {
-    result = req.query.first * req.query.second
+    result = req.query.first * req.query.second;
     if (result.isNaN) {
-      result = "NaN"
+      result = "NaN";
     } else if (result == null) {
-      result = "null"
+      result = "null";
     }
-  } catch(err) {
-    return res.json({error: err.message})
+  } catch (err) {
+    return res.json({ error: err.message });
   }
-  res.json({result: result})
-})
+  res.json({ result: result });
+});
 sessionRoutes = require("./routes/sessionRoutes");
 app.use("/session", sessionRoutes);
-const secretWordRouter = require('./routes/secretWord');
-const auth = require('./middleware/auth');
+const secretWordRouter = require("./routes/secretWord");
+const auth = require("./middleware/auth");
 app.use("/secretWord", auth, secretWordRouter);
-const jobRouter = require('./routes/jobs');
-app.use("/jobs",auth,jobRouter)
+const jobRouter = require("./routes/jobs");
+app.use("/jobs", auth, jobRouter);
 
 app.use((req, res) => {
-  res.set('Content-Type', 'text/plain')
+  res.set("Content-Type", "text/plain");
   res.status(404).send(`That page (${req.method} ${req.url}) was not found.`);
 });
 
@@ -112,45 +111,7 @@ app.use((err, req, res, next) => {
   console.log(err);
   res.status(500).send(err.message);
 });
-/*
-const OldView=app.settings.view
-app.set('view', ReportRender)
-var path = require('path');
-function ReportRender(name, options) {
-  this.view = new OldView(name, options)
-  var opts = options || {};
 
-  this.defaultEngine = opts.defaultEngine;
-  this.ext = path.extname(name);
-  this.name = name;
-  this.root = opts.root;
-
-  if (!this.ext && !this.defaultEngine) {
-    throw new Error('No default engine was specified and no extension was provided.');
-  }
-
-  var fileName = name;
-
-  if (!this.ext) {
-    // get extension from default engine name
-    this.ext = this.defaultEngine[0] !== '.'
-      ? '.' + this.defaultEngine
-      : this.defaultEngine;
-
-    fileName += this.ext;
-  }
-  this.path = this.lookup(fileName);
-}
-ReportRender.prototype.resolve = function resolve(dir, file) {
-  return this.view.resolve(dir, file)
-}
-ReportRender.prototype.lookup = function lookup(name) {
-  return this.view.lookup(name)
-}
-ReportRender.prototype.render = function render(options, callback) {
-  return callback(null, JSON.stringify({path: this.path, options: options}))
-};
-*/
 const port = process.env.PORT || 3000;
 const start = () => {
   try {
@@ -165,4 +126,4 @@ const start = () => {
 
 const server = start();
 
-module.exports = { app, server}
+module.exports = { app, server };
