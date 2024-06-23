@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test mocha tests/*.js --exit",
     "start": "node app",
     "dev": "nodemon app"
   },
@@ -35,5 +35,13 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "chai": "^5.1.1",
+    "chai-http": "^5.0.0",
+    "factory-bot": "^6.3.1",
+    "mocha": "^10.4.0",
+    "puppeteer": "^22.12.0"
   }
 }
