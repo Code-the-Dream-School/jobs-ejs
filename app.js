@@ -1,9 +1,8 @@
 const express = require("express");
 require("express-async-errors");
-const helmet = require('helmet');
-const xss = require('xss-clean');
-const rateLimiter = require('express-rate-limit');
-
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimiter = require("express-rate-limit");
 
 const app = express();
 
@@ -18,7 +17,7 @@ const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 let mongoURL = process.env.MONGO_URI;
 if (process.env.NODE_ENV == "test") {
-  mongoURL = process.env.MONGO_URI_TEST
+  mongoURL = process.env.MONGO_URI_TEST;
 }
 const store = new MongoDBStore({
   // may throw an error, which won't be caught
@@ -53,12 +52,12 @@ let csrf_development_mode = true;
 if (app.get("env") === "production") {
   csrf_development_mode = false;
 }
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 app.use(
   rateLimiter({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
-  })
+  }),
 );
 app.use(helmet());
 app.use(xss());
@@ -72,20 +71,20 @@ app.get("/", (req, res) => {
 });
 sessionRoutes = require("./routes/sessionRoutes");
 app.use("/session", sessionRoutes);
-const secretWordRouter = require('./routes/secretWord');
-const auth = require('./middleware/auth');
+const secretWordRouter = require("./routes/secretWord");
+const auth = require("./middleware/auth");
 app.use("/secretWord", auth, secretWordRouter);
-const jobRouter = require('./routes/jobs')
-app.use("/jobs",auth,jobRouter)
-app.get("/multiply", (req,res)=> {
-  const result = req.query.first * req.query.second
+const jobRouter = require("./routes/jobs");
+app.use("/jobs", auth, jobRouter);
+app.get("/multiply", (req, res) => {
+  const result = req.query.first * req.query.second;
   if (result.isNaN) {
-    result = "NaN"
+    result = "NaN";
   } else if (result == null) {
-    result = "null"
+    result = "null";
   }
-  res.json({result: result})
-})
+  res.json({ result: result });
+});
 
 app.use((req, res) => {
   res.status(404).send(`That page (${req.method} ${req.url}) was not found.`);
