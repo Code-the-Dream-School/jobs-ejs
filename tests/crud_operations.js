@@ -1,10 +1,7 @@
 const { app, server } = require("../app");
 const Job = require("../models/Job")
-const { factory, seed_db, testUserPassword } = require("../util/seed_db");
-const faker = require("@faker-js/faker").fakerEN_US;
+const { seed_db, testUserPassword } = require("../util/seed_db");
 const get_chai = require("../util/get_chai")
-
-const User = require("../models/User");
 
 describe("tests for crud operations", function () {
     before( async () => {
@@ -15,7 +12,6 @@ describe("tests for crud operations", function () {
             .send()
         let res = await req
         const textNoLineEnd = res.text.replaceAll("\n", "");
-        const csrfToken = /_csrf\" value=\"(.*?)\"/.exec(textNoLineEnd);
         this.csrfToken = /_csrf\" value=\"(.*?)\"/.exec(textNoLineEnd)[1]
         let cookies = res.headers["set-cookie"];
         this.csrfCookie = cookies.find((element) =>
@@ -41,6 +37,10 @@ describe("tests for crud operations", function () {
         expect(this.sessionCookie).to.not.be.undefined
         expect(this.csrfCookie).to.not.be.undefined
     })
+    // after(() => {
+    //     server.close();
+    //     console.log("closing the server")
+    //   });
     it("should bring up a list of 20 jobs", async () => {
         const { expect, request } = await get_chai()
         const req = request.execute(app)
@@ -65,7 +65,7 @@ describe("tests for crud operations", function () {
             .set("Cookie", this.sessionCookie + ";" + this.csrfCookie)
             .set("content-type", "application/x-www-form-urlencoded")
             .send(dataToPost)
-        const res = await req
+        await req
         const jobs = await Job.find({createdBy: this.test_user._id})
         expect(jobs.length).to.equal(21)
     })

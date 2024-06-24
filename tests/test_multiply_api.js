@@ -2,9 +2,9 @@ const { app, server } = require("../app");
 const get_chai = require("../util/get_chai")
 
 describe("test multiply api", function () {
-    after(() => {
-      server.close();
-    });
+    // after(async () => {
+    //   server.close();
+    // });
     it("should multiply two numbers", async () => {
       const { expect, request } = await get_chai()
       const req = request.execute(app).get("/multiply")

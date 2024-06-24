@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha tests/*.js --exit",
+    "puppeteer": "NODE_ENV=test mocha tests/puppeteer.js --exit",
     "start": "node app",
     "dev": "nodemon app"
   },

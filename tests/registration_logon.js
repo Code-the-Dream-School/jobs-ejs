@@ -6,9 +6,9 @@ const get_chai = require("../util/get_chai")
 const User = require("../models/User");
 
 describe("tests for registration and logon", function () {
-  after(() => {
-    server.close();
-  });
+  // after(() => {
+  //   server.close();
+  // });
   it("should get the registration page", async () => {
     const {expect, request} = await get_chai()
     const req = request.execute(app)
