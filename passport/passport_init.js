@@ -33,7 +33,7 @@ const passport_init = () => {
     try {
       const user = await User.findById(id);
       if (!user) {
-        return done(new Error("user not found"));
+        return done(null,null);
       }
       return done(null, user);
     } catch (e) {

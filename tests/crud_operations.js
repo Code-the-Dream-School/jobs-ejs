@@ -1,4 +1,4 @@
-const { app, server } = require("../app");
+const { app } = require("../app");
 const Job = require("../models/Job");
 const { seed_db, testUserPassword } = require("../util/seed_db");
 const get_chai = require("../util/get_chai");
@@ -36,10 +36,7 @@ describe("tests for crud operations", function () {
     expect(this.sessionCookie).to.not.be.undefined;
     expect(this.csrfCookie).to.not.be.undefined;
   });
-  // after(() => {
-  //     server.close();
-  //     console.log("closing the server")
-  //   });
+
   it("should bring up a list of 20 jobs", async () => {
     const { expect, request } = await get_chai();
     const req = request

@@ -1,10 +1,7 @@
-const { app, server } = require("../app");
+const { app } = require("../app");
 const get_chai = require("../util/get_chai");
 
 describe("test multiply api", function () {
-  // after(async () => {
-  //   server.close();
-  // });
   it("should multiply two numbers", async () => {
     const { expect, request } = await get_chai();
     const req = request

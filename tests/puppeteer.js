@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const { app, server } = require("../app");
+require("../app");
 const { seed_db, testUserPassword } = require("../util/seed_db");
 const Job = require("../models/Job");
 
@@ -19,7 +19,6 @@ describe("jobs-ejs puppeteer test", function () {
   after(async function () {
     this.timeout(5000);
     await browser.close();
-    //     server.close();
   });
   describe("got to site", function () {
     it("should have completed a connection", async function () {});

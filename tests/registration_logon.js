@@ -1,4 +1,4 @@
-const { app, server } = require("../app");
+const { app } = require("../app");
 const { factory, seed_db } = require("../util/seed_db");
 const faker = require("@faker-js/faker").fakerEN_US;
 const get_chai = require("../util/get_chai");
