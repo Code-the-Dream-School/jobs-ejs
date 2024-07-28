@@ -1,24 +1,39 @@
 <%- include("partials/head.ejs") %>
 <%- include("partials/header.ejs") %>
+<% let position = "" %>
+<% let company = "" %>
+<% let status = "" %>
+    <% if (!job) { %>
     <h2>Adding a Job Listing</h2>
     <form method="POST" action="/jobs">
+    <% } else { %>
+    <h2>Editing a Job Listing</h2>
+    <% company = job.company %>
+    <% status = job.status %>
+    <% position = job.position %>
+    <form method="POST" action="/jobs/update/<%=job.id%>"
+    <% } %>
             <div>
               <label for="company">company:</label>
-              <input type="text" id="company" name="company" />
+              <input type="text" id="company" name="company" value="<%=company%>"/>
             </div>
             <div>
               <label for="position">position:</label>
-              <input type="text" id="position" name="position" />
+              <input type="text" id="position" name="position" value="<%=position%>"/>
             </div>
             <div>
               <label for="status">status:</label>
-              <select id="status" name="status">
+              <select id="status" name="status" value="<%=status%>">
                 <option value="pending">pending</option>
                 <option value="interview">interview</option>
                 <option value="declined">declined</option>
               </select>
             </div>
+            <% if (!job) { %>
             <button>add</button>
+            <% } else { %>
+            <button>update</button>
+            <% } %>
             <a href="/jobs"><button type="button">cancel</button></a>
         <input type="hidden" name="_csrf" value="<%= _csrf %>">
     </form>

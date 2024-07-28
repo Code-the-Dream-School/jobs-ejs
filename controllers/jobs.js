@@ -11,9 +11,33 @@ const getJobs = async (req, res) => {
 };
 
 const addJob = (req, res) => {
-  res.render("job");
+  res.render("job", {job: null});
 };
 
+const editJob = async (req,res) => {
+  const job = await Job.findById(req.params.id, req.body)
+  if (!job) {
+    req.flash("error", "The job entry could not be found.")
+    res.redirect("/jobs")
+  } else {
+    res.render("job", { job })
+  }
+}
+
+const updateJob = async (req, res, next) => {
+  try { 
+    const job = await Job.findByIdAndUpdate(req.params.id, req.body )
+    req.flash("info", "The job entry was created.");
+    res.redirect("/jobs");
+  } catch (e) {
+    if (e.constructor.name === "ValidationError") {
+      parse_v(e, req);
+    } else {
+      return next(e);
+    }
+    return res.render("job", { job, errors: req.flash("error") });
+  }
+}
 const createJob = async (req, res, next) => {
   req.body.createdBy = req.user._id;
   try {
@@ -48,4 +72,4 @@ const deleteJob = async (req, res) => {
   res.redirect("/jobs");
 };
 
-module.exports = { getJobs, addJob, createJob, deleteJob };
+module.exports = { getJobs, addJob, createJob, deleteJob, editJob, updateJob };
