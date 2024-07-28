@@ -14,7 +14,7 @@
             <td><%= job.company %></td>
             <td><%= job.position %></td>
             <td><%= job.status %></td>
-            <td><button type="button">edit</button></td>
+            <td><a href="/jobs/edit/<%= job.id %>"><button type="button">edit</button></a></td>
             <td>
               <form method="POST" action="/jobs/delete/<%= job.id %>" style="display: inline">
                 <button>delete</button>
